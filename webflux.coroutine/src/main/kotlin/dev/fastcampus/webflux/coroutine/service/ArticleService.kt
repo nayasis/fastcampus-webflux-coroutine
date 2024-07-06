@@ -13,9 +13,11 @@ class ArticleService(
 ) {
 
     suspend fun getAll(title: String?): Flow<Article> {
-        return title?.ifEmpty { null }
-            ?.let { repository.findAllByTitleContains(it) }
-            ?: repository.findAll()
+        return if(title.isNullOrEmpty()) {
+            repository.findAll()
+        } else {
+            repository.findAllByTitleContains(title)
+        }
     }
 
     suspend fun get(id: Long): Article {
@@ -43,9 +45,9 @@ class ArticleService(
 
     @Transactional
     suspend fun delete(id: Long) {
-        if(!repository.existsById(id))
-            throw NotFoundException("id: $id")
-        repository.deleteById(id)
+        repository.findById(id)?.let {
+            repository.delete(it)
+        } ?: throw NotFoundException("id: $id")
     }
 
 }
