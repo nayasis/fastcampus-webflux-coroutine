@@ -1,0 +1,42 @@
+package dev.fastcampus.webflux.coroutine.model
+
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import org.springframework.data.relational.core.mapping.Table
+import javax.annotation.processing.Generated
+
+//@Entity(name="TB_ARTICLE")
+//@EntityListeners(AuditingEntityListener::class)
+@Table("TB_ARTICLE")
+class Article(
+    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Generated
+    var id: Long = 0,
+
+    var title: String = "",
+
+    var body: String? = null,
+
+    var authorId: Long? = null,
+
+): BaseEntity() {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as Article
+        return id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+
+    override fun toString(): String {
+        return "Article(id=$id, title='$title', body=$body, authorId=$authorId, ${super.toString()})"
+    }
+
+}
+
