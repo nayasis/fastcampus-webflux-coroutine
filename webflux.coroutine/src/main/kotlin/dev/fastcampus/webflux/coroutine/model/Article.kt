@@ -1,6 +1,6 @@
 package dev.fastcampus.webflux.coroutine.model
 
-import jakarta.persistence.Id
+import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import javax.annotation.processing.Generated
 

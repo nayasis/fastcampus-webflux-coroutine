@@ -5,15 +5,20 @@ import dev.fastcampus.webflux.coroutine.service.ArticleService
 import dev.fastcampus.webflux.coroutine.service.ReqCreate
 import dev.fastcampus.webflux.coroutine.service.ReqUpdate
 import kotlinx.coroutines.flow.Flow
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
-@RestController("/article")
+@RestController
+@RequestMapping("/article")
 class ArticleController(
     private val service: ArticleService
 ) {
@@ -28,13 +33,14 @@ class ArticleController(
         return service.getAll(title)
     }
 
-    @PostMapping
-    suspend fun create(request: ReqCreate): Article {
+    @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
+    suspend fun create(@RequestBody request: ReqCreate): Article {
         return service.create(request)
     }
 
     @PutMapping("/{id}")
-    suspend fun update(@PathVariable id: Long, request: ReqUpdate): Article {
+    suspend fun update(@PathVariable id: Long, @RequestBody request: ReqUpdate): Article {
         return service.update(id, request)
     }
 
