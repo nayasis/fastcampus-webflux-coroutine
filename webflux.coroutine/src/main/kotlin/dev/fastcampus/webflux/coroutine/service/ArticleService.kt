@@ -12,7 +12,7 @@ class ArticleService(
     private val repository: ArticleRepository,
 ) {
 
-    suspend fun getAll(title: String?): Flow<Article> {
+    suspend fun getAll(title: String? = null): Flow<Article> {
         return if(title.isNullOrEmpty()) {
             repository.findAll()
         } else {
