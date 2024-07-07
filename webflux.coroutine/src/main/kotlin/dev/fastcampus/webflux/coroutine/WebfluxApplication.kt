@@ -8,8 +8,8 @@ import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories
 @SpringBootApplication
 @EnableR2dbcRepositories
 @EnableR2dbcAuditing
-class Application
+class WebfluxApplication
 
 fun main(args: Array<String>) {
-	runApplication<Application>(*args)
+	runApplication<WebfluxApplication>(*args)
 }
