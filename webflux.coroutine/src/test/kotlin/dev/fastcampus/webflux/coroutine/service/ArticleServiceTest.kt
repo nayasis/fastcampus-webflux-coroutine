@@ -35,7 +35,7 @@ class ArticleServiceTest(
         logger.debug { ">> count: ${runBlocking {repository.count()}}" }
     }}
 
-    "get: error" {
+    "get: not found" {
         shouldThrow<NotFoundException> { service.get(99999999) }
     }
 

@@ -38,14 +38,13 @@ class ArticleControllerTest(
     "create & get" {
         val request = ReqCreate("test", "r2dbc demo", 1234)
         val newId   = client.post().uri("/article").accept(APPLICATION_JSON)
-            .bodyValue(request)
-            .exchange()
+            .bodyValue(request).exchange()
             .expectStatus().isCreated
             .returnResult(Article::class.java)
             .responseBody.awaitSingle().id
 
-        val created = client.get().uri("/article/${newId}").accept(APPLICATION_JSON)
-            .exchange().expectStatus().isOk
+        val created = client.get().uri("/article/${newId}").accept(APPLICATION_JSON).exchange()
+            .expectStatus().isOk
             .returnResult(Article::class.java)
             .responseBody.awaitSingle()
 
@@ -56,7 +55,7 @@ class ArticleControllerTest(
 
     "get: not found" {
         client.get().uri("/article/99999999").accept(APPLICATION_JSON).exchange()
-        .expectStatus().isNotFound
+            .expectStatus().isNotFound
     }
 
     "get all" {
@@ -82,7 +81,8 @@ class ArticleControllerTest(
 
         val new = service.create(ReqCreate("title 1", "blabla 1", 1234))
 
-        client.put().uri("/article/${new.id}").bodyValue(ReqUpdate(authorId = 9999)).accept(APPLICATION_JSON).exchange()
+        client.put().uri("/article/${new.id}").accept(APPLICATION_JSON)
+            .bodyValue(ReqUpdate(authorId = 9999)).exchange()
             .expectStatus().isOk
             .returnResult(Article::class.java)
 
@@ -99,16 +99,14 @@ class ArticleControllerTest(
         val prev = getAllCount()
 
         val created = client.post().uri("/article").accept(APPLICATION_JSON)
-            .bodyValue(ReqCreate("test", "r2dbc demo", 1234))
-            .exchange()
+            .bodyValue(ReqCreate("test", "r2dbc demo", 1234)).exchange()
             .expectStatus().isCreated
             .returnResult(Article::class.java)
             .responseBody.awaitSingle()
 
         getAllCount() shouldBe prev + 1
 
-        client.delete().uri("/article/${created.id}")
-            .accept(APPLICATION_JSON).exchange()
+        client.delete().uri("/article/${created.id}").accept(APPLICATION_JSON).exchange()
             .expectStatus().isOk
 
         getAllCount() shouldBe prev
