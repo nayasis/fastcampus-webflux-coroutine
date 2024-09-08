@@ -1,30 +1,23 @@
 package dev.fastcampus.async.c3.threadcost
 
-import java.lang.Thread.sleep
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicLong
+import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 
 fun main() {
-    val count    = 2_000
-    val executor = Executors.newFixedThreadPool(count)
-    val latcher  = CountDownLatch(count)
-    val starter  = CountDownLatch(1)
-
-    repeat(count) {
-        executor.submit {
-            starter.await() // wait for start
-            repeat(count) {
-                sleep(1)
-            }
-            latcher.countDown()
-        }
-    }
-
+    val latcher = CountDownLatch(2_000)
+    val sum = AtomicLong()
     measureTimeMillis {
-        starter.countDown() // start
+        for (i in 1..latcher.count) {
+            thread(name = "t-$i") {
+                for (k in 1..100_000) {
+                    sum.addAndGet(1L)
+//                    println("${Thread.currentThread().name} : $sum")
+                }
+                latcher.countDown()
+            }
+        }
         latcher.await()
-    }.let { println(">> elapsed: ${it}ms") }
-
-    executor.shutdown()
+    }.let { println(">> sum: $sum, elapsed: $it ms") }
 }
