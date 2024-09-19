@@ -11,7 +11,7 @@ fun main() {
         val taskA = subA()
         while(! taskA.isDone) {
             subB()
-            Thread.sleep(2000)
+            Thread.sleep(3_000)
         }
     }.let { logger.debug { ">> elapsed : $it ms" } }
 }
@@ -19,7 +19,7 @@ fun main() {
 private fun subA(): CompletableFuture<Unit> {
     return CompletableFuture.supplyAsync {
         logger.debug { "start sub A" }
-        Thread.sleep(3000)
+        Thread.sleep(10_000)
         logger.debug { "end sub A" }
     }
 }

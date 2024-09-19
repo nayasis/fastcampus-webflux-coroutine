@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-	kotlin("jvm") version "1.8.21"
+	kotlin("jvm") version "1.9.24"
 }
 
 java {
@@ -16,9 +14,8 @@ dependencies {
 
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
 
-	implementation("ch.qos.logback:logback-classic:1.4.12")
+	implementation("ch.qos.logback:logback-classic:1.4.14")
 	implementation("io.github.microutils:kotlin-logging:3.0.5")
-	implementation("io.projectreactor:reactor-core:3.5.7")
 
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
