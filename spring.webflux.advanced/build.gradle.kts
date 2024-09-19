@@ -44,6 +44,12 @@ dependencies {
 //	runtimeOnly("org.mariadb:r2dbc-mariadb:1.1.3")
 //	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
+	// 1. txid
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.8.1")
+	implementation("org.springframework.boot:spring-boot-starter-aop")
+	implementation("io.micrometer:context-propagation:1.1.1")
+
+
 }
 
 kotlin {

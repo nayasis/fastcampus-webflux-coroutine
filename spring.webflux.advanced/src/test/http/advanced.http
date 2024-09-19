@@ -1,0 +1,10 @@
+### TxId
+GET {{domain}}/test/txid
+Content-Type: application/json
+#x-txid: test
+
+### TxId error
+POST {{domain}}/test/txid2
+Content-Type: application/json
+#x-txid: test
+

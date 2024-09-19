@@ -5,7 +5,8 @@ spring:
     ansi:
       enabled: always
   r2dbc:
-    url: r2dbc:pool:h2:mem://localhost/sample
+#    url: r2dbc:pool:h2:mem://localhost/sample
+    url: r2dbc:pool:h2:file:///./sample
   sql:
     init:
       mode: always
@@ -19,6 +20,9 @@ server:
     include-stacktrace: always
     include-exception: true
 logging:
+  pattern:
+    #    console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%logger|%blue(\\(%F:%L\\))|%msg%n"
+    console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%blue(\\(%F:%L\\))|%msg%n"
   level:
     #    root: debug
     #    org.springframework.r2dbc.core: debug
