@@ -8,3 +8,13 @@ POST {{domain}}/test/txid2
 Content-Type: application/json
 #x-txid: test
 
+### error
+PUT {{domain}}/test/error
+Content-Type: application/json
+
+{
+  "id": "123456789",
+  "age": 99,
+  "birthday": "2020-04-25",
+  "flag": "error"
+}

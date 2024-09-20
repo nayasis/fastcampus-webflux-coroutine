@@ -1,9 +1,9 @@
 package dev.fastcampus.webflux.coroutine.config
 
+import dev.fastcampus.webflux.coroutine.config.extension.txid
 import io.micrometer.context.ContextRegistry
 import org.slf4j.MDC
 import org.springframework.core.annotation.Order
-import org.springframework.scheduling.config.ContextLifecycleScheduledTaskRegistrar
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
@@ -36,8 +36,8 @@ class TxidFilter: WebFilter {
         MDC.put(KEY_TXID, uuid)
         return chain.filter(exchange).contextWrite {
             Context.of(KEY_TXID, uuid)
-//        }.doOnError {
-//            exchange.request.txid = uuid
+        }.doOnError {
+            exchange.request.txid = uuid
         }
     }
 }

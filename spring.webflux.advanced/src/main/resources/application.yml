@@ -13,22 +13,25 @@ spring:
       schema-locations: classpath:script/schema.sql
 server:
   shutdown: graceful
-  compression:
-    enabled: true
+#  compression:
+#    enabled: true
   error:
+    include-exception: true
+    include-binding-errors: always
     include-message: always
     include-stacktrace: always
-    include-exception: true
 logging:
   pattern:
-    #    console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%logger|%blue(\\(%F:%L\\))|%msg%n"
-    console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%blue(\\(%F:%L\\))|%msg%n"
+        console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%logger|%blue(\\(%F:%L\\))|%msg%n"
+#    console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%blue(\\(%F:%L\\))|%msg%n"
   level:
     #    root: debug
     #    org.springframework.r2dbc.core: debug
     #    org.springframework.r2dbc.connection.init.ScriptUtils: debug
     "dev.fastcampus.webflux": debug
     "io.r2dbc.h2.H2Connection": off
+    "org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler": off
+    "org.springframework.web.HttpLogging": off
 ---
 spring:
   config:

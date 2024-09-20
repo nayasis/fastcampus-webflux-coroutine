@@ -1,5 +1,5 @@
 plugins {
-	id("org.springframework.boot") version "3.3.1"
+	id("org.springframework.boot") version "3.3.4"
 	id("io.spring.dependency-management") version "1.1.5"
 	kotlin("jvm") version "1.9.24"
 	kotlin("plugin.spring") version "1.9.24"
@@ -45,9 +45,13 @@ dependencies {
 //	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
 	// 1. txid
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.8.1")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.8.1") // maven coroutine slf4j
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 	implementation("io.micrometer:context-propagation:1.1.1")
+
+	// 2. error handler
+	implementation("org.springframework.boot:spring-boot-starter-validation") // maven spring validation starter
+
 
 
 }
