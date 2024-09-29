@@ -16,9 +16,9 @@ spring:
       ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
-  sql:
-    init:
-      schema-locations: classpath:script/test.sql
+#  sql:
+#    init:
+#      schema-locations: classpath:script/test.sql
 server:
   shutdown: graceful
   compression:

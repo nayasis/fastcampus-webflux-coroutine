@@ -31,6 +31,9 @@ dependencies {
 
 	implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
 
+	// for controller test
+	testImplementation("org.springframework.boot:spring-boot-starter-webflux")
+
 }
 
 kotlin {

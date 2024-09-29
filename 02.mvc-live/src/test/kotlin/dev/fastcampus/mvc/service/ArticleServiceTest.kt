@@ -26,9 +26,6 @@ class ArticleServiceTest(
     @Test
     fun `create & get `() {
 
-        val article = service.get(999)
-        logger.debug { ">> article pre-defined: $article" }
-
         val req = ReqCreate("title 1", "blabl1 1", 1234)
         val id = service.create(req).id
         service.get(id).let {
