@@ -5,8 +5,8 @@ spring:
     ansi:
       enabled: always
   datasource:
-    url: jdbc:h2:mem:////sample
     driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:////sample
     hikari:
       auto-commit: false
       transaction-isolation: TRANSACTION_READ_COMMITTED
@@ -16,14 +16,17 @@ spring:
       ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+  sql:
+    init:
+      schema-locations: classpath:script/test.sql
 server:
   shutdown: graceful
   compression:
     enabled: true
   error:
-    include-message: always
-    include-stacktrace: always
     include-exception: true
+    include-stacktrace: always
+    include-message: always
 logging:
   level:
     "dev.fastcampus.mvc": debug
