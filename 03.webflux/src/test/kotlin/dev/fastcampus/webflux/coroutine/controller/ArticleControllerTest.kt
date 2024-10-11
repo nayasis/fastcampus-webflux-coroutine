@@ -17,7 +17,7 @@ import org.springframework.test.annotation.Rollback
 import org.springframework.test.web.reactive.server.WebTestClient
 
 @SpringBootTest
-@Rollback
+//@Rollback
 @AutoConfigureWebTestClient
 class ArticleControllerTest(
     private val client: WebTestClient,
