@@ -1,0 +1,53 @@
+### Hello World
+GET {{domain}}/?name=
+Content-Type: application/json
+
+### create 1
+POST {{domain}}/article
+Content-Type: application/json
+
+{
+  "title": "test 1",
+  "body": "description 1",
+  "authorId": 1234
+}
+
+### create 2
+POST {{domain}}/article
+Content-Type: application/json
+
+{
+  "title": "test 2",
+  "body": "description 2",
+  "authorId": 1234
+}
+
+### get
+GET {{domain}}/article/1
+Content-Type: application/json
+
+### get (error)
+GET {{domain}}/article/0
+Content-Type: application/json
+
+
+### get all
+GET {{domain}}/article/all
+Content-Type: application/json
+
+### get all (filter)
+GET {{domain}}/article/all?title=1
+Content-Type: application/json
+
+### update
+PUT {{domain}}/article/1
+Content-Type: application/json
+
+{
+  "body": "updated",
+  "authorId": 5678
+}
+
+### delete
+DELETE {{domain}}/article/3
+Content-Type: application/json
