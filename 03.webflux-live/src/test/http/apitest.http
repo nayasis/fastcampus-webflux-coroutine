@@ -1,0 +1,4 @@
+### Hello world
+GET {{domain}}/hello?name=blabla&age=10
+Content-Type: application/json
+
