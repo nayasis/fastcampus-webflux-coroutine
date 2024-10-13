@@ -25,8 +25,8 @@ class WebfluxApplicationTests(
 		repository.count() shouldBe prevCnt + 1
 
 		val saved = repository.findById(created.id)
-		saved?.createdAt shouldNotBe null
-		saved?.updatedAt shouldNotBe null
+		saved?.createdat shouldNotBe null
+		saved?.updatedat shouldNotBe null
 
 	}
 
