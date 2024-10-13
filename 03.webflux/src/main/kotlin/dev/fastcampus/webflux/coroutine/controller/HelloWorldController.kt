@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 class HelloWorldController {
 
     @GetMapping("/")
-    fun index(@RequestParam name: String?): String {
+    suspend fun index(@RequestParam name: String?): String {
         return "Hello ${name ?: "Coroutine"}"
     }
 }

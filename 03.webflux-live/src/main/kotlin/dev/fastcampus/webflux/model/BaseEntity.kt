@@ -7,9 +7,9 @@ import java.time.LocalDateTime
 
 open class BaseEntity(
     @CreatedDate
-    var createdat: LocalDateTime? = null,
+    var createdAt: LocalDateTime? = null,
     @LastModifiedDate
-    var updatedat: LocalDateTime? = null,
+    var updatedAt: LocalDateTime? = null,
 ): Serializable {
-    override fun toString(): String = "createdat=$createdat, updatedat=$updatedat"
+    override fun toString(): String = "createdAt=$createdAt, updatedAt=$updatedAt"
 }
