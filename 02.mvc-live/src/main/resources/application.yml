@@ -16,9 +16,6 @@ spring:
       ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
-#  sql:
-#    init:
-#      schema-locations: classpath:script/test.sql
 server:
   shutdown: graceful
   compression:
@@ -33,3 +30,5 @@ logging:
   pattern:
     #    console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%logger|%blue(\\(%F:%L\\))|%msg%n"
     console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%blue(\\(%F:%L\\))|%msg%n"
+---
+
