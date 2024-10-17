@@ -11,11 +11,11 @@ import java.time.LocalDateTime
 @EntityListeners(AuditingEntityListener::class)
 open class BaseEntity(
     @CreatedDate
-    var createdat: LocalDateTime? = null,
+    var createdAt: LocalDateTime? = null,
     @LastModifiedDate
-    var updatedat: LocalDateTime? = null,
+    var updatedAt: LocalDateTime? = null,
 ) {
     override fun toString(): String {
-        return "createdat=$createdat, updatedat=$updatedat"
+        return "createdat=$createdAt, updatedat=$updatedAt"
     }
 }

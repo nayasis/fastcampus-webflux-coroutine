@@ -1,4 +1,8 @@
 spring:
+  profiles:
+    active: stress
+---
+spring:
   application:
     name: mvc
   output:
@@ -31,4 +35,20 @@ logging:
     #    console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%logger|%blue(\\(%F:%L\\))|%msg%n"
     console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%blue(\\(%F:%L\\))|%msg%n"
 ---
-
+spring:
+  config:
+    activate:
+      on-profile: stress
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/sample
+    username: user
+    password: 1234
+logging:
+  level:
+    dev.fastcampus: debug
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDBDialect
+#    database-platform: org.hibernate.dialect.MariaDB103Dialect

@@ -11,18 +11,18 @@ import java.io.Serializable
 class CompositePkEntity {
 
     @Id
-    @Column(name="`key`")
-    var key: String? = null
+    @Column(name="pk_id")
+    var id: String? = null
 
     @Id
-    @Column(name="`type`")
+    @Column(name="pk_type")
     var type: String? = null
 
-    @Column(name="`value`")
+    @Column(name="value")
     var value: String? = null
 
     data class pk (
-        val key: String,
+        val id: String,
         val type: String,
     ): Serializable
 
