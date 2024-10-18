@@ -7,6 +7,6 @@ services:
       - "8080:8080"
     environment:
       - spring.profiles.active=stress
-      - spring.datasource.url=jdbc:mariadb://192.168.0.66:3306/sample
+      - spring.datasource.url=jdbc:mariadb://192.168.0.71:3306/sample
       - logging.level.org.hibernate.SQL=off
       - logging.level.org.hibernate.orm.jdbc.bind=off

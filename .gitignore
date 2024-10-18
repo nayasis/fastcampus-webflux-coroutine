@@ -1,19 +1,10 @@
-03.spring-webflux/.gradle
 99.ppt/~$*.pptx
-.idea
-*/.gradle
-*/build/
-*/gradle/
-19.docker/mariadb (stress)/data/
-19.docker/mariadb (stress)/data.7z
+*\.idea
+**/*/.idea
+**/*/.gradle/
+**/*/gradle/
+**/*/build/
+**/*/__pycache__/
 19.docker/mariadb/data/
-19.docker/elasticsearch/data/
-04.testing/locust/__pycache__/
-04.testing/useless-webflux/gradle/wrapper/
-04.testing/useless-mvc/gradle/wrapper/
-04.testing/locust-docker/__pycache__/
-04.testing/dummy-data/dummy-data/.gradle/
-04.testing/dummy-data/dummy-data/build/
-04.testing/dummy-data/dummy-data/gradle/wrapper/
-04.testing/dummy-data/.gradle
-04.testing/dummy-data/build/
+
+
