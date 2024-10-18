@@ -3,16 +3,12 @@ from locust import events
 from locust.runners import MasterRunner, WorkerRunner
 
 class MyTask(TaskSet):
-    # wait_time = between(2,5)
     @task(100)
     def get(self):
-        self.client.get(f'/article/2')
+        self.client.get(f'/article/1')
     @task(1)
     def getAll(self):
         self.client.get(f'/article/all?title=matched')
-    # @task
-    # def delay(self):
-    #     self.client.get(f'/stress/delay')
 
 class LocustUser(FastHttpUser):
     host = "http://localhost:8080"

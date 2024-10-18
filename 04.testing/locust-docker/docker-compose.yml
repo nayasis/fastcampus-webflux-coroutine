@@ -7,7 +7,7 @@ services:
       - "8089:8089"
     volumes:
       - ./:/mnt/locust
-    command: -f /mnt/locust/stress.py --master -H http://10.202.96.73:8080
+    command: -f /mnt/locust/stress.py --master -H http://192.168.0.66:8080
   worker:
     image: locustio/locust
     volumes:

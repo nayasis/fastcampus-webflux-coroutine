@@ -3,6 +3,6 @@ CREATE TABLE IF NOT EXISTS TB_ARTICLE (
     title VARCHAR(255),
     body VARCHAR(2000),
     author_id BIGINT,
-    createdat TIMESTAMP,
-    updatedat TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );

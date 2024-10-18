@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  mvc:
+    container_name: mvc
+    image: mvc:0.0.1-SNAPSHOT
+    ports: # host:container
+      - "8080:8080"
+    environment:
+      - spring.profiles.active=stress
+      - spring.datasource.url=jdbc:mariadb://192.168.0.66:3306/sample
+      - logging.level.org.hibernate.SQL=off
+      - logging.level.org.hibernate.orm.jdbc.bind=off

@@ -1,15 +1,15 @@
 spring:
+  profiles:
+    active: stress
+---
+spring:
   application:
     name: webflux.coroutine
   output:
     ansi:
       enabled: always
-#  r2dbc:
-#    url: r2dbc:pool:h2:mem://localhost/sample
   r2dbc:
-    url: r2dbc:pool:mariadb://localhost:3306/sample
-    username: user
-    password: 1234
+    url: r2dbc:pool:h2:mem://localhost/sample
   sql:
     init:
       mode: always
@@ -24,16 +24,15 @@ server:
     include-exception: true
 logging:
   level:
-    #    root: debug
-    #    org.springframework.r2dbc.core: debug
-    #    org.springframework.r2dbc.connection.init.ScriptUtils: debug
+    "org.springframework.r2dbc.core": debug
+    "org.springframework.r2dbc.connection.init.ScriptUtils": debug
     "dev.fastcampus.webflux": debug
     "io.r2dbc.h2.H2Connection": off
 ---
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: stress
   r2dbc:
     url: r2dbc:pool:mariadb://localhost:3306/sample
     username: user

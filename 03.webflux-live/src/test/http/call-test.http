@@ -37,7 +37,7 @@ GET {{domain}}/article/all
 Content-Type: application/json
 
 ### get all (filter)
-GET {{domain}}/article/all?title=1
+GET {{domain}}/article/all?title=matched
 Content-Type: application/json
 
 ### update

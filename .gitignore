@@ -7,17 +7,13 @@
 19.docker/mariadb (stress)/data/
 19.docker/mariadb (stress)/data.7z
 19.docker/mariadb/data/
-06.testing/locust/__pycache__/stress.cpython-311.pyc
-06.testing/locust/__pycache__/locustfile.cpython-311.pyc
 19.docker/elasticsearch/data/
-08.payment-improved/09-03.payment-kafka/build
-08.payment-improved/09-03.payment-kafka/.gradle/
-05.testing/locust/__pycache__/
-05.testing/useless-webflux/gradle/wrapper/
-05.testing/useless-mvc/gradle/wrapper/
-05.testing/locust-docker/__pycache__/
-05.testing/dummy-data/dummy-data/.gradle/
-05.testing/dummy-data/dummy-data/build/
-05.testing/dummy-data/dummy-data/gradle/wrapper/
-05.testing/dummy-data/.gradle
-05.testing/dummy-data/build/
+04.testing/locust/__pycache__/
+04.testing/useless-webflux/gradle/wrapper/
+04.testing/useless-mvc/gradle/wrapper/
+04.testing/locust-docker/__pycache__/
+04.testing/dummy-data/dummy-data/.gradle/
+04.testing/dummy-data/dummy-data/build/
+04.testing/dummy-data/dummy-data/gradle/wrapper/
+04.testing/dummy-data/.gradle
+04.testing/dummy-data/build/
