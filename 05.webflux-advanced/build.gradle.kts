@@ -20,7 +20,7 @@ repositories {
 
 dependencies {
 
-	testImplementation("org.testcontainers:testcontainers:1.19.0")
+	testImplementation("org.testcontainers:testcontainers:1.20.2")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 
 	implementation("io.github.resilience4j:resilience4j-kotlin:2.1.0")

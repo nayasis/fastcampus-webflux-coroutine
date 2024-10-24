@@ -1,10 +1,12 @@
 version: "3.8"
 services:
   webflux-coroutine:
-    container_name: webflux-coroutine
-    image: webflux-coroutine:0.0.1-SNAPSHOT
+    container_name: webflux
+    image: webflux-coroutine-advanced:0.0.1-SNAPSHOT
     ports: #host : container
       - "8080:8080"
     environment:
-      - spring.r2dbc.url=r2dbc:pool:mariadb://192.168.0.114:3306/sample
-      - api.externalUrl=http://192.168.0.114:8081
+      - spring.r2dbc.url=r2dbc:pool:mariadb://192.168.0.71:3306/sample
+      - spring.data.redis.host=192.168.0.71
+      - spring.data.redis.port=6379
+      - api.externalUrl=http://192.168.0.71:8081
