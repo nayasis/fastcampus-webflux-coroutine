@@ -13,8 +13,9 @@ PUT {{domain}}/test/error
 Content-Type: application/json
 
 {
-  "id": "123456789",
-  "age": 99,
-  "birthday": "2020-04-25",
-  "flag": "error"
+  "id": "123",
+  "age": 11,
+  "birthday": "2024.02.29",
+  "message": "err"
 }
+

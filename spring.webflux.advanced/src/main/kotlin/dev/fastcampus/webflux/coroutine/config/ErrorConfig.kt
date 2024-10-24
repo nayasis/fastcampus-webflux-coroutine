@@ -21,6 +21,8 @@ class ErrorConfig {
                 options: ErrorAttributeOptions?,
             ): MutableMap<String, Any> {
 
+//                return super.getErrorAttributes(serverRequest, options)
+
                 val request = serverRequest?.exchange()?.request ?: return mutableMapOf()
                 val txid = request.txid ?: ""
 

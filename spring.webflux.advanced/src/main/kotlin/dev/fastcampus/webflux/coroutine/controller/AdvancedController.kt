@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import java.security.InvalidParameterException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.coroutines.Continuation
@@ -58,44 +57,40 @@ class AdvancedController(
     }
 
 //    @PutMapping("/test/error")
-//    fun testError(@RequestBody @Valid request: ReqErrorTest, error: BindingResult) {
-////        throw RuntimeException("hello error")
+//    suspend fun error(@RequestBody @Valid request: ReqError, errors: BindingResult) {
+//        logger.debug { "request: $request" }
 //
-//        if(request.flag == "error") { // webflux 에서는 bindresult 를 지원 안함 (주입시킬 수 없음)
-//            error.rejectValue(request::flag.name, "business error")
-//            throw BindException(error)
+//        if(request.message == "err") {  // webflux 에서는 bindresult 를 지원 안함 (주입시킬 수 없음)
+//            errors.rejectValue(request::message.name, "custom")
+//            throw BindException(errors)
 //        }
 //
+////            throw RuntimeException("yahoo!")
 //    }
 
     @PutMapping("/test/error")
-    fun testError(@RequestBody @Valid request: ReqErrorTest) {
+    suspend fun error(@RequestBody @Valid request: ReqError) {
         logger.debug { "request: $request" }
-//        throw RuntimeException("hello error")
 
-        if(request.flag == "error") {
-            throw InvalidParameterException(request, request::flag, "business error")
+        if(request.message == "err") {
+            throw InvalidParameter(request, request::message, "custom")
         }
-
-        logger.info { "success" }
-
     }
 
 }
 
-class InvalidParameterException(
+class InvalidParameter(
     request: Any,
     field: KProperty<*>,
-    message: String = "",
-    code: String = "",
+    message: String,
 ): BindException(
     WebDataBinder(request, request::class.simpleName!!).bindingResult.apply {
-        rejectValue(field.name, code, message)
+        rejectValue(field.name, message)
     }
 )
 
 
-data class ReqErrorTest(
+data class ReqError(
     @field:NotEmpty
     @field:Size(min=3, max=10)
     val id: String?,
@@ -105,28 +100,35 @@ data class ReqErrorTest(
     val age: Int?,
     @field:DateString
     val birthday: String?,
-    val flag: String? = null,
+    val message: String?,
 )
 
 @Target(AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [DateValidator::class])
 annotation class DateString(
-    val message: String = "not a valid date",
-    val groups: Array<KClass<*>> = [],
+    val message : String = "not a valid date",
+    val groups: Array<KClass<out Any>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )
 
 class DateValidator: ConstraintValidator<DateString,String> {
+
+    private val yyyyMMdd = DateTimeFormatter.ofPattern("yyyyMMdd")
+
     override fun isValid(value: String?, context: ConstraintValidatorContext?): Boolean {
-        // 20240921 -> yyyyMMdd
-        val text = value?.filter { it.isDigit() } ?: return true
-        return runCatching { LocalDate.parse(text, DateTimeFormatter.ofPattern("yyyyMMdd")) }
-            .getOrNull() != null
+        // 2024-10-27 -> yyyyMMdd
+        val text = value?.filter { it.isDigit() } ?: return false
+
+        return runCatching {
+            LocalDate.parse(text,yyyyMMdd).let {
+                logger.trace { "parse date: $text -> ${it.format(yyyyMMdd)}" }
+                text == it.format(yyyyMMdd)
+            }
+        }.getOrNull() ?: false
     }
 
 }
-
 
 
 
@@ -144,7 +146,7 @@ class AdvancedAspectConfig {
     """)
     fun bindMdcContext(jp: ProceedingJoinPoint): Any? {
 
-        logger.debug { """
+        logger.trace { """
             >> bind MDC context
             - method: ${jp.signature}
             - args:   ${jp.args.toList()}
