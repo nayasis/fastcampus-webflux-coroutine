@@ -70,7 +70,7 @@ class AdvancedController(
 
     @PutMapping("/test/error")
     suspend fun error(@RequestBody @Valid request: ReqError) {
-        logger.debug { "request: $request" }
+//        logger.debug { "request: $request" }
 
         if(request.message == "err") {
             throw InvalidParameter(request, request::message, "custom")

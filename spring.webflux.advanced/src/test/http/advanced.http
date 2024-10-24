@@ -9,13 +9,13 @@ Content-Type: application/json
 #x-txid: test
 
 ### error
-PUT {{domain}}/test/error
+PUT {{domain}}/test/error?qq=11
 Content-Type: application/json
 
 {
   "id": "123",
   "age": 11,
   "birthday": "2024.02.29",
-  "message": "err"
+  "message": "err1"
 }
 
