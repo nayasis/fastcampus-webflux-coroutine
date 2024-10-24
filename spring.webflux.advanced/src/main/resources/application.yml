@@ -32,6 +32,45 @@ logging:
     "io.r2dbc.h2.H2Connection": off
     "org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler": off
     "org.springframework.web.HttpLogging": off
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      test-circuit:
+        sliding-window-size: 10 # 실패/성공을 계산할 sliding window 크기
+        failure-rate-threshold: 30 # 실패율이 30% 이상이면 차단
+        wait-duration-in-open-state: 10s # circuit breaker 가 열린 상태에서, 다시 닫힐 때까지 대기시간
+        permitted-number-of-calls-in-half-open-state: 3 # 반개방 상태에서 허용되는 호출 수
+    configs:
+      default:
+        register-health-indicator: true
+  ratelimiter:
+    instances:
+      test-limit:
+        limit-for-period: 3 # 3번 요청
+        limit-refresh-period: 20s # 주기는 10초
+        timeout-duration: 1s # 제한에 걸렸을 때 기다리는 시간
+    configs:
+      default:
+        register-health-indicator: true
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoint:
+    health:
+      showDetails: always
+    web:
+      exposure:
+        include: "*"
+      expose: "*"
+    metrics:
+      enabled: true
+  metrics:
+    enable:
+      resilience4j:
+        circuitbreaker:
+          calls: true
 ---
 spring:
   config:

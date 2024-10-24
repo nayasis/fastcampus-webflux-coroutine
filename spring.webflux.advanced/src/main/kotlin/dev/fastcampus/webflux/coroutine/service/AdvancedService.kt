@@ -1,7 +1,8 @@
 package dev.fastcampus.webflux.coroutine.service
 
-import dev.fastcampus.webflux.coroutine.repository.ArticleRepository
+import dev.fastcampus.webflux.coroutine.controller.mono
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.stereotype.Service
@@ -29,4 +30,24 @@ class AdvancedService{
 
         logger.debug { "end mdc 2" }
     }
+
+    @CircuitBreaker(name = "test-circuit", fallbackMethod = "fallback")
+    fun unstable(flag: Boolean?): Mono<String> {
+        return mono {
+            delay(500)
+            if(flag == false) {
+                throw RuntimeException("failed")
+            }
+            "success"
+        }
+    }
+
+    fun fallback(e: Throwable): Mono<String> {
+        return mono {
+            "fallback response due to ${e.message}"
+        }
+    }
+
 }
+
+

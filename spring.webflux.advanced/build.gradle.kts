@@ -52,7 +52,11 @@ dependencies {
 	// 2. error handler
 	implementation("org.springframework.boot:spring-boot-starter-validation") // maven spring validation starter
 
+	// 4. rate limiter
+	implementation("io.github.resilience4j:resilience4j-spring-boot3:2.2.0")
+	implementation("io.github.resilience4j:resilience4j-reactor:2.2.0")
 
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 
 }
 

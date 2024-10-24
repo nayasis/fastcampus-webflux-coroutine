@@ -2,6 +2,8 @@ package dev.fastcampus.webflux.coroutine.controller
 
 import dev.fastcampus.webflux.coroutine.service.AdvancedService
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
@@ -12,7 +14,10 @@ import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.Size
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.reactor.awaitSingle
+import kotlinx.coroutines.reactor.awaitSingleOrNull
 import kotlinx.coroutines.slf4j.MDCContext
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
@@ -21,16 +26,17 @@ import org.aspectj.lang.reflect.MethodSignature
 import org.springframework.core.KotlinDetector
 import org.springframework.stereotype.Component
 import org.springframework.validation.BindException
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Mono
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.coroutines.Continuation
+import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
@@ -43,12 +49,15 @@ class AdvancedController(
 
     @GetMapping("/test/txid")
     suspend fun testTxId() {
-//        withContext(MDCContext()) {
-            logger.debug { "hello txid" }
-            delay(100)
-            service.mdc()
-            logger.info { "end txid test" }
-//        }
+        logger.debug { "hello txid" }
+        delay(100)
+        service.mdc()
+
+        mono {
+            logger.debug { "tick in mono" }
+        }.awaitSingleOrNull()
+
+        logger.info { "end txid test" }
     }
 
     @PostMapping("/test/txid2")
@@ -77,6 +86,17 @@ class AdvancedController(
         }
     }
 
+    @GetMapping("/test/circuit-breaker")
+    suspend fun circuitBreaker(flag: Boolean?): String {
+        return service.unstable(flag).awaitSingle()
+    }
+
+    @GetMapping("/test/rate-limiter")
+    @RateLimiter(name = "test-limit")
+    suspend fun rateLimiter() {
+        logger.debug { "hello ratelimiter" }
+    }
+
 }
 
 class InvalidParameter(
@@ -88,7 +108,6 @@ class InvalidParameter(
         rejectValue(field.name, message)
     }
 )
-
 
 data class ReqError(
     @field:NotEmpty
@@ -171,4 +190,11 @@ class AdvancedAspectConfig {
             return KotlinDetector.isSuspendingFunction(method)
         }
 
+}
+
+fun <T> mono(
+    context: CoroutineContext = MDCContext(),
+    block: suspend CoroutineScope.() -> T?
+): Mono<T> {
+    return kotlinx.coroutines.reactor.mono(context, block)
 }

@@ -19,3 +19,18 @@ Content-Type: application/json
   "message": "err1"
 }
 
+### circuit breaker (success)
+GET {{domain}}/test/circuit-breaker
+Content-Type: application/json
+
+### circuit breaker (fail)
+GET {{domain}}/test/circuit-breaker?flag=false
+Content-Type: application/json
+
+### rate limiter
+GET {{domain}}/test/rate-limiter
+Content-Type: application/json
+
+### actuator
+GET {{domain}}/actuator/health
+Content-Type: application/json
