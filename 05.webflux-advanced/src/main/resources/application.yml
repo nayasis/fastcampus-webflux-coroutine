@@ -1,79 +1,86 @@
 spring:
-  profiles:
-    active: local
----
-spring:
+  application:
+    name: webflux.coroutine
   output:
     ansi:
       enabled: always
-  application:
-    name: webflux-coroutine
   r2dbc:
-    url: r2dbc:pool:mariadb://localhost:3306/sample
-    username: user
-    password: 1234
+#    url: r2dbc:pool:h2:mem://localhost/sample
+    url: r2dbc:pool:h2:file:///./sample
   sql:
     init:
       mode: always
-      schema-locations: classpath:db-init/schema.sql
-logging:
-  level:
-    dev.fastcampus: debug
-    org.springframework.r2dbc.core: debug
-    org.springframework.r2dbc.connection.init: debug
-    org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler: off
-    org.springframework.web.HttpLogging: off
-  pattern:
-#    console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%logger|%blue(\\(%F:%L\\))|%msg%n"
-    console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%blue(\\(%F:%L\\))|%msg%n"
-api:
-  externalUrl: http://localhost:8081
----
-spring:
-  config:
-    activate:
-      on-profile: local
-  r2dbc:
-#    url: r2dbc:pool:h2:file:///./sample
-    url: r2dbc:pool:h2:mem://localhost/sample
-  sql:
-    init:
-      mode: always
-      data-locations: classpath:db-init/test.sql
+      schema-locations: classpath:script/schema.sql
+  data:
+    redis:
+      host: localhost
+      port: 6379
 server:
+  shutdown: graceful
+#  compression:
+#    enabled: true
   error:
-    include-exception: on
-    include-message: on_param
-    include-stacktrace: on_param
-    include-binding-errors: on_param
----
-spring:
-  config:
-    activate:
-      on-profile: test
-  r2dbc:
-    url: r2dbc:pool:h2:mem://localhost/sample
-  sql:
-    init:
-      mode: embedded
----
-spring:
-  config:
-    activate:
-      on-profile: stress
-  sql:
-    init:
-      mode: never
+    include-exception: true
+    include-binding-errors: always
+    include-message: always
+    include-stacktrace: always
 logging:
+  pattern:
+        console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%logger|%blue(\\(%F:%L\\))|%msg%n"
+#    console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%blue(\\(%F:%L\\))|%msg%n"
   level:
-    dev.fastcampus: debug
-    org.springframework.r2dbc.core: off
-    org.springframework.r2dbc.connection.init: off
+    #    root: debug
+    #    org.springframework.r2dbc.core: debug
+    #    org.springframework.r2dbc.connection.init.ScriptUtils: debug
+    "dev.fastcampus.webflux": debug
+    "io.r2dbc.h2.H2Connection": off
+    "org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler": off
+    "org.springframework.web.HttpLogging": off
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      test-circuit:
+        sliding-window-size: 10 # 실패/성공을 계산할 sliding window 크기
+        failure-rate-threshold: 30 # 실패율이 30% 이상이면 차단
+        wait-duration-in-open-state: 10s # circuit breaker 가 열린 상태에서, 다시 닫힐 때까지 대기시간
+        permitted-number-of-calls-in-half-open-state: 3 # 반개방 상태에서 허용되는 호출 수
+    configs:
+      default:
+        register-health-indicator: true
+  ratelimiter:
+    instances:
+      test-limit:
+        limit-for-period: 3 # 3번 요청
+        limit-refresh-period: 20s # 주기는 10초
+        timeout-duration: 1s # 제한에 걸렸을 때 기다리는 시간
+    configs:
+      default:
+        register-health-indicator: true
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoint:
+    health:
+      showDetails: always
+    web:
+      exposure:
+        include: "*"
+      expose: "*"
+    metrics:
+      enabled: true
+  metrics:
+    enable:
+      resilience4j:
+        circuitbreaker:
+          calls: true
 ---
 spring:
   config:
     activate:
       on-profile: prod
-server:
-  error:
-    include-stacktrace: never
+  r2dbc:
+    url: r2dbc:pool:mariadb://localhost:3306/sample
+    username: user
+    password: 1234

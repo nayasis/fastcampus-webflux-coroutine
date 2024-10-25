@@ -1,1 +1,1 @@
-rootProject.name = "webflux-coroutine-advanced"
+rootProject.name = "webflux.coroutine.advanced"
