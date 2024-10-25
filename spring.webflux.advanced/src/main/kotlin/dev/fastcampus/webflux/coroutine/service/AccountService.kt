@@ -1,5 +1,6 @@
 package dev.fastcampus.webflux.coroutine.service
 
+import dev.fastcampus.webflux.coroutine.Locker
 import dev.fastcampus.webflux.coroutine.exception.NoAccountFound
 import kotlinx.coroutines.delay
 import dev.fastcampus.webflux.coroutine.model.Article as Account
@@ -11,6 +12,7 @@ import kotlin.time.Duration.Companion.seconds
 @Service
 class AccountService(
     private val repository: AccountRepository,
+    private val locker: Locker,
 ) {
 
     suspend fun get(id: Long): ResAccount {
@@ -19,12 +21,16 @@ class AccountService(
 
     @Transactional
     suspend fun deposit(id: Long, amount: Long, delay: Int): ResAccount {
-        return repository.findById(id)?.let {
+        val key = "account-lock:$id"
+        return locker.lock(key) {
             delay(delay.seconds)
-            repository.save(it.apply {
-                balance += amount
-            }).let { ResAccount(it) }
-        } ?: throw NoAccountFound("id: $id")
+            repository.findById(id)?.let {
+//                delay(delay.seconds)
+                repository.save(it.apply {
+                    balance += amount
+                }).let { ResAccount(it) }
+            } ?: throw NoAccountFound("id: $id")
+        }
     }
 
     @Transactional
