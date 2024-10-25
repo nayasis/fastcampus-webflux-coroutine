@@ -1,8 +1,10 @@
 package dev.fastcampus.webflux.coroutine.controller
 
 import dev.fastcampus.webflux.coroutine.model.Article
+import dev.fastcampus.webflux.coroutine.service.AccountService
 import dev.fastcampus.webflux.coroutine.service.AdvancedService
 import dev.fastcampus.webflux.coroutine.service.ArticleService
+import dev.fastcampus.webflux.coroutine.service.ResAccount
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter
@@ -45,6 +47,7 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
+import kotlin.time.Duration.Companion.seconds
 
 private val logger = KotlinLogging.logger {}
 
@@ -52,6 +55,7 @@ private val logger = KotlinLogging.logger {}
 class AdvancedController(
     private val service: AdvancedService,
     private val template: ReactiveRedisTemplate<Any,Any>,
+    private val accountService: AccountService,
 ): ApplicationListener<ApplicationReadyEvent> {
 
     @GetMapping("/test/txid")
@@ -113,6 +117,22 @@ class AdvancedController(
     @PostMapping("/send/{message}")
     suspend fun pub(@PathVariable message: String) {
         template.convertAndSend("test-topic", message).awaitSingle()
+    }
+
+    @GetMapping("/account/{id}")
+    suspend fun getAccount(@PathVariable id: Long): ResAccount {
+        return accountService.get(id)
+    }
+
+    @PostMapping("/account")
+    suspend fun create(): ResAccount {
+        return accountService.create()
+    }
+
+
+    @PutMapping("/account/{id}/{amount}/{delay}")
+    suspend fun deposit(@PathVariable id: Long, @PathVariable amount: Long, @PathVariable delay: Int): ResAccount {
+        return accountService.deposit(id, amount, delay)
     }
 
 }

@@ -1,6 +1,7 @@
 package dev.fastcampus.webflux.coroutine.model
 
 import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.Version
 import org.springframework.data.relational.core.mapping.Table
 import javax.annotation.processing.Generated
 
@@ -15,6 +16,11 @@ class Article(
     var body: String? = null,
 
     var authorId: Long? = null,
+
+    var balance: Long = 0,
+
+//    @Version
+    var version: Int = 0,
 
 ): BaseEntity() {
 

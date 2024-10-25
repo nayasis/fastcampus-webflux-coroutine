@@ -36,6 +36,19 @@ POST {{domain}}/send/369 369
 Content-Type: application/json
 
 
+### get account
+GET {{domain}}/account/1
+Content-Type: application/json
+
+### deposit
+PUT {{domain}}/account/1/100/0
+Content-Type: application/json
+
+### create account
+POST {{domain}}/account
+Content-Type: application/json
+
+
 ### actuator
 GET {{domain}}/actuator/health
 Content-Type: application/json
