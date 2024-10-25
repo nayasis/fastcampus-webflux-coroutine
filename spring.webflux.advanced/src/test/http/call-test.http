@@ -23,7 +23,11 @@ Content-Type: application/json
 }
 
 ### get
-GET {{domain}}/article/1
+GET {{domain}}/article/33
+Content-Type: application/json
+
+### evict cache
+DELETE {{domain}}/evict/article/get
 Content-Type: application/json
 
 ### get (error)

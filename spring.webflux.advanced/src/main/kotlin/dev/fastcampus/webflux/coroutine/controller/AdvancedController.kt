@@ -1,6 +1,8 @@
 package dev.fastcampus.webflux.coroutine.controller
 
+import dev.fastcampus.webflux.coroutine.model.Article
 import dev.fastcampus.webflux.coroutine.service.AdvancedService
+import dev.fastcampus.webflux.coroutine.service.ArticleService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter
@@ -23,11 +25,15 @@ import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.reflect.MethodSignature
+import org.springframework.boot.context.event.ApplicationReadyEvent
+import org.springframework.context.ApplicationListener
 import org.springframework.core.KotlinDetector
+import org.springframework.data.redis.core.ReactiveRedisTemplate
 import org.springframework.stereotype.Component
 import org.springframework.validation.BindException
 import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -44,8 +50,9 @@ private val logger = KotlinLogging.logger {}
 
 @RestController
 class AdvancedController(
-    private val service: AdvancedService
-) {
+    private val service: AdvancedService,
+    private val template: ReactiveRedisTemplate<Any,Any>,
+): ApplicationListener<ApplicationReadyEvent> {
 
     @GetMapping("/test/txid")
     suspend fun testTxId() {
@@ -95,6 +102,17 @@ class AdvancedController(
     @RateLimiter(name = "test-limit")
     suspend fun rateLimiter() {
         logger.debug { "hello ratelimiter" }
+    }
+
+    override fun onApplicationEvent(event: ApplicationReadyEvent) {
+        template.listenToChannel("test-topic").doOnNext {
+            logger.debug { ">> received: $it" }
+        }.subscribe()
+    }
+
+    @PostMapping("/send/{message}")
+    suspend fun pub(@PathVariable message: String) {
+        template.convertAndSend("test-topic", message).awaitSingle()
     }
 
 }

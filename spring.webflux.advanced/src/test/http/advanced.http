@@ -31,6 +31,12 @@ Content-Type: application/json
 GET {{domain}}/test/rate-limiter
 Content-Type: application/json
 
+### redis publish
+POST {{domain}}/send/369 369
+Content-Type: application/json
+
+
 ### actuator
 GET {{domain}}/actuator/health
 Content-Type: application/json
+

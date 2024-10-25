@@ -3,9 +3,12 @@ package dev.fastcampus.webflux.coroutine.service
 import dev.fastcampus.webflux.coroutine.exception.NotFoundException
 import dev.fastcampus.webflux.coroutine.model.Article
 import dev.fastcampus.webflux.coroutine.repository.ArticleRepository
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+
+private val logger = KotlinLogging.logger{}
 
 @Service
 class ArticleService(
@@ -21,6 +24,7 @@ class ArticleService(
     }
 
     suspend fun get(id: Long): Article {
+        logger.debug { "get article on DB (id: ${id})" }
         return repository.findById(id) ?: throw NotFoundException("article id: $id")
     }
 
