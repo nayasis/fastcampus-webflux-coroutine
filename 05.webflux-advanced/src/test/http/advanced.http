@@ -53,3 +53,11 @@ Content-Type: application/json
 GET {{domain}}/actuator/health
 Content-Type: application/json
 
+
+### get article
+GET {{domain}}/article/3
+Content-Type: application/json
+
+### evict article cashe
+DELETE  {{domain}}/article/evict-cache
+Content-Type: application/json

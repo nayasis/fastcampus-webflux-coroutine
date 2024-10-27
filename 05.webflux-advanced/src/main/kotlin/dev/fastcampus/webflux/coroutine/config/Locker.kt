@@ -1,4 +1,4 @@
-package dev.fastcampus.webflux.coroutine
+package dev.fastcampus.webflux.coroutine.config
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.delay
@@ -16,10 +16,10 @@ private val logger = KotlinLogging.logger {}
 
 @Component
 class Locker(
-    template: ReactiveRedisTemplate<Any,Any>
+    template: ReactiveRedisTemplate<String,Any>
 ) {
 
-    private val localLock = ConcurrentHashMap<String,Boolean>()
+    private val localLock = ConcurrentHashMap<String, Boolean>()
 
     private val ops = template.opsForValue()
 
@@ -36,8 +36,7 @@ class Locker(
     private suspend fun tryLock(key: String): Boolean {
         val start = System.nanoTime()
 
-        // redisson
-        // ops.tryLock()
+        // use redisson for avoiding spin lock
 
         while (
             ! localLock.contains(key) &&

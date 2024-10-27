@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping
 class ArticleController(
     private val service: ArticleService,
-    private val cache: CacheManager
+    private val cache: CacheManager,
 ) {
 
     @GetMapping("/article/{id}")
@@ -22,7 +22,7 @@ class ArticleController(
         return cache.get(key) ?: run { service.get(id).also { cache.set(key, it) } }
     }
 
-    @DeleteMapping("/evict/article/get")
+    @DeleteMapping("/article/evict-cache")
     suspend fun evict() {
         cache.deleteAll("/article/get:")
     }

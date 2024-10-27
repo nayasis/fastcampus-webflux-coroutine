@@ -17,10 +17,10 @@ private val logger = KotlinLogging.logger{}
 
 @Component
 class CacheManager(
-    private val redisTemplate: ReactiveRedisTemplate<Any,Any>
+    private val customRedisTemplate: ReactiveRedisTemplate<String,Any>
 ) {
 
-    private val ops = redisTemplate.opsForValue()
+    private val ops = customRedisTemplate.opsForValue()
 
     val TTL = HashMap<String,Duration>()
 
@@ -45,8 +45,8 @@ class CacheManager(
     }
 
     suspend fun deleteAll(pattern: String) {
-        redisTemplate.keys("*$pattern*").asFlow().onEach { key ->
-            redisTemplate.delete(key).awaitFirstOrNull()
+        customRedisTemplate.keys("$pattern*").asFlow().onEach { key ->
+            customRedisTemplate.delete(key).awaitFirstOrNull()
         }.collect()
     }
 

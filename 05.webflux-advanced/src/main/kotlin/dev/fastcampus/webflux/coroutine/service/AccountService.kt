@@ -1,6 +1,6 @@
 package dev.fastcampus.webflux.coroutine.service
 
-import dev.fastcampus.webflux.coroutine.Locker
+import dev.fastcampus.webflux.coroutine.config.Locker
 import dev.fastcampus.webflux.coroutine.exception.NoAccountFound
 import kotlinx.coroutines.delay
 import dev.fastcampus.webflux.coroutine.model.Article as Account

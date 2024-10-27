@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ### get
-GET {{domain}}/article/33
+GET {{domain}}/article/3
 Content-Type: application/json
 
 ### evict cache
